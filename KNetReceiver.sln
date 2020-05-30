@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KNetReceiver", "KNetReceiver.vcxproj", "{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Release|ARM = Release|ARM
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}.Debug|ARM.ActiveCfg = Debug|ARM
+		{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}.Debug|ARM.Build.0 = Debug|ARM
+		{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}.Release|ARM.ActiveCfg = Release|ARM
+		{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}.Release|ARM.Build.0 = Release|ARM
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
