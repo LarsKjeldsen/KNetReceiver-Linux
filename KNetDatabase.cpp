@@ -34,33 +34,33 @@ void KNetDatabase::InsertReading(MYSQL* MySQLConRet, const char *tabel_name, cha
 {
 	char s[1024] = "INSERT INTO KNet.Data (Time, ";
 
-	strncat(s, tabel_name, sizeof(s));
+	strcat(s, tabel_name);
 
-	strncat(s, ") VALUES (DATE_SUB(now(), INTERVAL SECOND(now()) SECOND), \'", sizeof(s));
-	strncat(s, value, sizeof(s));
-	strncat(s, "\'", sizeof(s));
+	strcat(s, ") VALUES (DATE_SUB(now(), INTERVAL SECOND(now()) SECOND), \'");
+	strcat(s, value);
+	strcat(s, "\'");
 
-	strncat(s, ") ON duplicate KEY UPDATE ", sizeof(s));
-	strncat(s, tabel_name, sizeof(s));
-	strncat(s, "=\'", sizeof(s));
-	strncat(s, value, sizeof(s));
-	strncat(s, "\'", sizeof(s));
+	strcat(s, ") ON duplicate KEY UPDATE ");
+	strcat(s, tabel_name);
+	strcat(s, "=\'");
+	strcat(s, value);
+	strcat(s, "\'");
 
 
 
 	if (MySQLConRet == NULL)
-		if (KNetConnect())
-			return;
+		KNetConnect();
 
 	try
 	{
 		// Update Readings
 		int ret = mysql_query(MySQLConRet, s);
+
 		if (ret == 1) // Tabel probably not excist.
 		{
 			char s1[256] = "ALTER TABLE `KNet`.`Data` ADD COLUMN ";
-			strncat(s1, tabel_name, sizeof(s1));
-			strncat(s1, " VARCHAR(45) NULL", sizeof(s1));
+			strcat(s1, tabel_name);
+			strcat(s1, " VARCHAR(45) NULL");
 			ret = mysql_query(MySQLConRet, s1);
 			ret = mysql_query(MySQLConRet, s);
 		}
@@ -69,13 +69,13 @@ void KNetDatabase::InsertReading(MYSQL* MySQLConRet, const char *tabel_name, cha
 	{
 		int errorno = mysql_errno(MySQLConRet);
 		printf("Error connection to database - %s - errorno = %d", e.what(), errorno);
-		KNetConnect();
+//		KNetConnect();
 		return;
 	}
 }
 
 
-int KNetDatabase::KNetConnect()
+bool KNetDatabase::KNetConnect()
 {
 	int Count = 0;
 	do {
@@ -86,7 +86,7 @@ int KNetDatabase::KNetConnect()
 
 		if (MySQLConRet_1 == NULL || MySQLConRet_2 == NULL)
 			printf("ERROR in database connection - %s %s\n", mysql_error(MySQLConnection_1), mysql_error(MySQLConnection_2));
-		if (Count++ > 24)
+		if (Count++ > 10)
 			break;
 
 		usleep(500000);
@@ -94,6 +94,9 @@ int KNetDatabase::KNetConnect()
 
 	printf("MySQL Connection Info: %s - %s \n", mysql_get_host_info(MySQLConnection_1), mysql_get_host_info(MySQLConnection_2));
 
-	return 0;
+	if (MySQLConRet_1 != NULL && MySQLConRet_2 != NULL)
+		return true;
+	else
+		return false;
 }
 

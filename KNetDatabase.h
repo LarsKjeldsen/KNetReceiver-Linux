@@ -21,7 +21,7 @@ public:
 
 protected:
 
-	int KNetConnect();
+	bool KNetConnect();
 	MYSQL* MySQLConRet_1;
 	MYSQL* MySQLConRet_2;
 	MYSQL* MySQLConnection_1;
