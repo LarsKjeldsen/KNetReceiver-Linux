@@ -11,6 +11,7 @@
 #include <mosquitto.h>
 #include "main.h"
 
+
 using namespace std;
 
 
@@ -27,6 +28,7 @@ time_t timer;
 void my_message_callback(struct mosquitto *mosq, void *userdata, const struct mosquitto_message *message)
 {
 	string topic;
+	time_t  t;
 
 	topic = message->topic;
 
@@ -36,6 +38,12 @@ void my_message_callback(struct mosquitto *mosq, void *userdata, const struct mo
 		if (topic[i] == '/')
 			topic[i] = '_';
 
+	t = time(&t);
+	struct  tm tm = *localtime(&t);
+	char c[20];
+	strftime(c, sizeof(c), "%T %F ", &tm);
+
+	printf("Message received : %s - %s - %s\n", c, topic.c_str(), (char*)(message->payload));
 	db.InsertReadings(topic.c_str(), (char *)(message->payload));
 }
 
@@ -72,7 +80,7 @@ void my_log_callback(struct mosquitto *mosq, void *userdata, int level, const ch
 
 int main(int argc, char** argv)
 {
-	const char *host = "192.168.1.20";
+	const char *host = "192.168.1.21";
 	int port = 1883;
 	int keepalive = 60;
 	bool clean_session = true;

@@ -35,14 +35,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <IncludePath>$(ProjectDir)include;$(ProjectDir)include\mysql;$(IncludePath)</IncludePath>
-    <ProjectPublicIncludePath>/usr/include/mysql;$(ProjectPublicIncludePath)</ProjectPublicIncludePath>
+    <ProjectPublicIncludePath>/usr/include/mariadb;/usr/include/mariadb/mysql;$(ProjectPublicIncludePath)</ProjectPublicIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <IncludePath>$(ProjectDir)\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <Link>
-      <LibraryDependencies>mosquitto;mysqlclient;pthread;dl;m;z</LibraryDependencies>
+      <LibraryDependencies>mosquitto;mariadb;pthread;dl;m;z</LibraryDependencies>
     </Link>
     <RemotePostBuildEvent>
       <Command>
