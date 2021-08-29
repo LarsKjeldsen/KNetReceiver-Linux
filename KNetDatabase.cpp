@@ -2,14 +2,15 @@
 #include <mysql.h>
 #include <string.h>
 #include <unistd.h>
+#include "password.h"
 
 using namespace std;
 
 KNetDatabase::KNetDatabase()
 {
 	hostName_1 = "192.168.1.21";
-	userId = "KNet";
-	password = "Minmore9876";
+	userId = USERNAME;
+	password = PASSWORD;
 	DB = "KNet";
 
 	KNetConnect();

@@ -70,6 +70,7 @@
   <ItemGroup>
     <ClInclude Include="KNetDatabase.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="password.h" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
