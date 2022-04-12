@@ -14,7 +14,6 @@
 
 using namespace std;
 
-
 #define CONFIG_TIMEOUT 10000 // 10 sek.
 #define SETTING_TIMEOUT 500 // 500 ms
 
@@ -73,8 +72,8 @@ void my_subscribe_callback(struct mosquitto *mosq, void *userdata, int mid, int 
 
 void my_log_callback(struct mosquitto *mosq, void *userdata, int level, const char *str)
 {
-	/* Pring all log messages regardless of level. */
-//	printf("LOG - %s\n", str);
+	if (level != MOSQ_LOG_NOTICE && level != MOSQ_LOG_DEBUG)
+		fprintf(stderr, "Callback %d - %s\n", level, str);
 }
 
 
@@ -87,10 +86,10 @@ int main(int argc, char** argv)
 	struct mosquitto *mosq = NULL;
 
 	mosquitto_lib_init();
-	mosq = mosquitto_new(NULL, clean_session, NULL);
+	mosq = mosquitto_new("KNet-Receiver", clean_session, NULL);
 	if (!mosq) {
 
-		printf("Error: Out of memory.\n");
+		fprintf(stderr, "Error: Out of memory.\n");
 		return 1;
 	}
 	mosquitto_log_callback_set(mosq, my_log_callback);
@@ -99,7 +98,7 @@ int main(int argc, char** argv)
 	mosquitto_subscribe_callback_set(mosq, my_subscribe_callback);
 
 	if (mosquitto_connect(mosq, host, port, keepalive)) {
-		printf("Unable to connect.\n");
+		fprintf(stderr, "Unable to connect.\n");
 		return 1;
 	}
 

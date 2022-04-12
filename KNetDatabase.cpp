@@ -8,7 +8,7 @@ using namespace std;
 
 KNetDatabase::KNetDatabase()
 {
-	hostName_1 = "192.168.1.21";
+	hostName = "192.168.1.21";
 	userId = USERNAME;
 	password = PASSWORD;
 	DB = "KNet";
@@ -18,13 +18,19 @@ KNetDatabase::KNetDatabase()
 
 KNetDatabase::~KNetDatabase()
 {
-	mysql_close(MySQLConnection_1);
+	mysql_close(MySQLConnection);
 }
 
 
 void KNetDatabase::InsertReadings(const char* tabel_name, char* value)
 {
-	InsertReading(MySQLConRet_1, tabel_name, value);
+	while (MySQLConRet == NULL || MySQLConRet == NULL)
+	{
+		fprintf(stderr, "MariaDB reconnect\n");
+		KNetConnect();
+	};
+
+	InsertReading(MySQLConRet, tabel_name, value);
 }
 
 void KNetDatabase::InsertReading(MYSQL* MySQLConRet, const char *tabel_name, char *value)
@@ -43,17 +49,18 @@ void KNetDatabase::InsertReading(MYSQL* MySQLConRet, const char *tabel_name, cha
 	strcat(s, value);
 	strcat(s, "\'");
 
-
-
-	if (MySQLConRet == NULL)
-		KNetConnect();
-
 	try
 	{
 		// Update Readings
 		int ret = mysql_query(MySQLConRet, s);
+		if (ret != 0) 
+		{
+			fprintf(stderr, "MariaDB Unable to write to database : %d\n", ret);
+			KNetConnect();
+			return;
+		}
 
-		if (ret == 1) // Tabel probably not excist.
+		if (ret == 1) // Tabel do probably not excist.
 		{
 			char s1[256] = "ALTER TABLE `KNet`.`Data` ADD COLUMN ";
 			strcat(s1, tabel_name);
@@ -65,8 +72,8 @@ void KNetDatabase::InsertReading(MYSQL* MySQLConRet, const char *tabel_name, cha
 	catch (exception &e)
 	{
 		int errorno = mysql_errno(MySQLConRet);
-		printf("Error connection to database - %s - errorno = %d", e.what(), errorno);
-//		KNetConnect();
+		fprintf(stderr, "Error connection to database - %s - errorno = %d", e.what(), errorno);
+		KNetConnect();
 		return;
 	}
 }
@@ -76,20 +83,20 @@ bool KNetDatabase::KNetConnect()
 {
 	int Count = 0;
 	do {
-		MySQLConnection_1 = mysql_init(NULL);
-		MySQLConRet_1 = mysql_real_connect(MySQLConnection_1, hostName_1.c_str(), userId.c_str(), password.c_str(), DB.c_str(), 0, 0, 0);
+		MySQLConnection = mysql_init(NULL);
+		MySQLConRet = mysql_real_connect(MySQLConnection, hostName.c_str(), userId.c_str(), password.c_str(), DB.c_str(), 0, 0, 0);
 
-		if (MySQLConRet_1 == NULL)
-			printf("ERROR in database connection\n 1- %s\n 2- %s\n 3-%s\n", mysql_error(MySQLConnection_1), mysql_error(MySQLConnection_2));
+		if (MySQLConRet == NULL)
+			fprintf(stderr, "ERROR in database connection : %d\n", mysql_error(MySQLConnection));
 		if (Count++ > 10)
 			break;
 
 		usleep(500000);
-	} while (MySQLConRet_1 == NULL);
+	} while (MySQLConRet == NULL);
 
-	printf("MySQL Connection Info: %s\n", mysql_get_host_info(MySQLConnection_1));
+	printf("MySQL Connection Info: %s\n", mysql_get_host_info(MySQLConnection));
 
-	if (MySQLConRet_1 != NULL)
+	if (MySQLConRet != NULL)
 		return true;
 	else
 		return false;

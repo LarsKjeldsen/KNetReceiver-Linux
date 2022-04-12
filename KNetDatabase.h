@@ -22,15 +22,9 @@ public:
 protected:
 
 	bool KNetConnect();
-	MYSQL* MySQLConRet_1;
-	MYSQL* MySQLConRet_2;
-	MYSQL* MySQLConRet_3;
-	MYSQL* MySQLConnection_1;
-	MYSQL* MySQLConnection_2;
-	MYSQL* MySQLConnection_3;
-	std::string hostName_1;
-	std::string hostName_2;
-	std::string hostName_3;
+	MYSQL* MySQLConRet;
+	MYSQL* MySQLConnection;
+	std::string hostName;
 	std::string userId;
 	std::string password;
 	std::string DB;
