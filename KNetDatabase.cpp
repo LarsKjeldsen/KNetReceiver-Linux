@@ -26,7 +26,7 @@ void KNetDatabase::InsertReadings(const char* tabel_name, char* value)
 {
 	while (MySQLConRet == NULL || MySQLConRet == NULL)
 	{
-		fprintf(stderr, "MariaDB reconnect\n");
+		fprintf(stderr, "%s : MariaDB reconnect\n", get_time());
 		KNetConnect();
 	};
 
@@ -53,26 +53,30 @@ void KNetDatabase::InsertReading(MYSQL* MySQLConRet, const char *tabel_name, cha
 	{
 		// Update Readings
 		int ret = mysql_query(MySQLConRet, s);
-		if (ret != 0) 
-		{
-			fprintf(stderr, "MariaDB Unable to write to database : %d\n", ret);
-			KNetConnect();
-			return;
-		}
-
+		
 		if (ret == 1) // Tabel do probably not excist.
 		{
+			printf("%s : Creating column : %s\n", get_time(), tabel_name);
 			char s1[256] = "ALTER TABLE `KNet`.`Data` ADD COLUMN ";
 			strcat(s1, tabel_name);
 			strcat(s1, " VARCHAR(45) NULL");
 			ret = mysql_query(MySQLConRet, s1);
 			ret = mysql_query(MySQLConRet, s);
+			return;
 		}
+
+		if (ret != 0)
+		{
+			fprintf(stderr, "%s : MariaDB Unable to write to database : %d\n", get_time(), ret);
+			KNetConnect();
+			return;
+		}
+
 	}
 	catch (exception &e)
 	{
 		int errorno = mysql_errno(MySQLConRet);
-		fprintf(stderr, "Error connection to database - %s - errorno = %d", e.what(), errorno);
+		fprintf(stderr, "%s :  Error connection to database - %s - errorno = %d", get_time(), e.what(), errorno);
 		KNetConnect();
 		return;
 	}
@@ -87,7 +91,7 @@ bool KNetDatabase::KNetConnect()
 		MySQLConRet = mysql_real_connect(MySQLConnection, hostName.c_str(), userId.c_str(), password.c_str(), DB.c_str(), 0, 0, 0);
 
 		if (MySQLConRet == NULL)
-			fprintf(stderr, "ERROR in database connection : %d\n", mysql_error(MySQLConnection));
+			fprintf(stderr, "%s : ERROR in database connection : %d\n", get_time(), mysql_error(MySQLConnection));
 		if (Count++ > 10)
 			break;
 

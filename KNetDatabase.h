@@ -8,6 +8,7 @@
 
 #pragma once
 
+extern char * get_time();
 
 
 class KNetDatabase

@@ -17,17 +17,23 @@ using namespace std;
 #define CONFIG_TIMEOUT 10000 // 10 sek.
 #define SETTING_TIMEOUT 500 // 500 ms
 
-// Address of our node
-const uint16_t this_node = 0;
-
 KNetDatabase db;
 time_t timer;
 
+char * get_time()
+{
+	char *s;
+	time_t t;
+	t = time(NULL);
+	struct  tm* tm = localtime(&t);
+	s = asctime(tm);
+	s[strlen(s)-1]='\0';
+	return s;
+}
 
 void my_message_callback(struct mosquitto *mosq, void *userdata, const struct mosquitto_message *message)
 {
 	string topic;
-	time_t  t;
 
 	topic = message->topic;
 
@@ -37,12 +43,7 @@ void my_message_callback(struct mosquitto *mosq, void *userdata, const struct mo
 		if (topic[i] == '/')
 			topic[i] = '_';
 
-	t = time(&t);
-	struct  tm tm = *localtime(&t);
-	char c[20];
-	strftime(c, sizeof(c), "%T %F ", &tm);
-
-	printf("Message received : %s - %s - %s\n", c, topic.c_str(), (char*)(message->payload));
+	printf("%s : Message received : %s : %s\n", get_time(), topic.c_str(), (char*)(message->payload));
 	db.InsertReadings(topic.c_str(), (char *)(message->payload));
 }
 
@@ -73,7 +74,7 @@ void my_subscribe_callback(struct mosquitto *mosq, void *userdata, int mid, int 
 void my_log_callback(struct mosquitto *mosq, void *userdata, int level, const char *str)
 {
 	if (level != MOSQ_LOG_NOTICE && level != MOSQ_LOG_DEBUG)
-		fprintf(stderr, "Callback %d - %s\n", level, str);
+		fprintf(stderr, "%s : Callback %d - %s\n", get_time(), level, str);
 }
 
 
@@ -98,13 +99,13 @@ int main(int argc, char** argv)
 	mosquitto_subscribe_callback_set(mosq, my_subscribe_callback);
 
 	if (mosquitto_connect(mosq, host, port, keepalive)) {
-		fprintf(stderr, "Unable to connect.\n");
+		fprintf(stderr, "%s : Unable to connect.\n", get_time());
 		return 1;
 	}
 
 	printf("Welcome to KNet Receiver\n");
 	
-	mosquitto_loop_forever(mosq, 1000, 1);
+	mosquitto_loop_forever(mosq, 10000, 1);
 
 	return 0;
 }
