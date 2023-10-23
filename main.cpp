@@ -3,7 +3,7 @@
 #include <ctime>
 #include <stdio.h>
 #include <string>
-#include <mysql.h>
+#include <mysql/mysql.h>
 #include "KNetDatabase.h"
 #include <time.h>
 #include <iostream>
@@ -80,7 +80,7 @@ void my_log_callback(struct mosquitto *mosq, void *userdata, int level, const ch
 
 int main(int argc, char** argv)
 {
-	const char *host = "192.168.1.21";
+	const char *host = "192.168.1.22";
 	int port = 1883;
 	int keepalive = 60;
 	bool clean_session = true;

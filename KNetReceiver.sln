@@ -8,15 +8,23 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
+		Debug|x64 = Debug|x64
 		Release|ARM = Release|ARM
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}.Debug|ARM.ActiveCfg = Debug|ARM
 		{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}.Debug|ARM.Build.0 = Debug|ARM
 		{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}.Debug|ARM.Deploy.0 = Debug|ARM
+		{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}.Debug|x64.ActiveCfg = Debug|x64
+		{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}.Debug|x64.Build.0 = Debug|x64
+		{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}.Debug|x64.Deploy.0 = Debug|x64
 		{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}.Release|ARM.ActiveCfg = Release|ARM
 		{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}.Release|ARM.Build.0 = Release|ARM
 		{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}.Release|ARM.Deploy.0 = Release|ARM
+		{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}.Release|x64.ActiveCfg = Release|x64
+		{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}.Release|x64.Build.0 = Release|x64
+		{7899AE1A-3314-4B7D-88E8-3BC525F54AE0}.Release|x64.Deploy.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
