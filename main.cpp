@@ -3,7 +3,7 @@
 #include <ctime>
 #include <stdio.h>
 #include <string>
-#include <mysql/mysql.h>
+#include <mariadb/mysql.h>
 #include "KNetDatabase.h"
 #include <time.h>
 #include <iostream>

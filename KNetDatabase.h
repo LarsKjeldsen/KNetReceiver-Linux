@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <iostream>
-#include <mysql/mysql.h>
+#include <mariadb/mysql.h>
 #include <stdio.h>
 #include <exception>
 #include <string>

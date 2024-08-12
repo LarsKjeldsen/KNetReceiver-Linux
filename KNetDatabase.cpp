@@ -1,5 +1,5 @@
 #include "KNetDatabase.h"
-#include <mysql/mysql.h>
+#include <mariadb/mysql.h>
 #include <string.h>
 #include <unistd.h>
 #include "password.h"
@@ -8,7 +8,7 @@ using namespace std;
 
 KNetDatabase::KNetDatabase()
 {
-	hostName = "192.168.1.25";
+	hostName = "192.168.1.21";
 	userId = USERNAME;
 	password = PASSWORD;
 	DB = "KNet";
