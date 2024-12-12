@@ -8,7 +8,7 @@ using namespace std;
 
 KNetDatabase::KNetDatabase()
 {
-	hostName = "192.168.1.21";
+	hostName = "localhost";
 	userId = USERNAME;
 	password = PASSWORD;
 	DB = "KNet";
@@ -35,7 +35,7 @@ void KNetDatabase::InsertReadings(const char* tabel_name, char* value)
 
 void KNetDatabase::InsertReading(MYSQL* MySQLConRet, const char *tabel_name, char *value)
 {
-	char s[1024] = "INSERT INTO KNet.Data (Time, ";
+	char s[1024] = "INSERT INTO KNet.Data (TimeStamp, ";
 
 	strcat(s, tabel_name);
 
@@ -55,7 +55,7 @@ void KNetDatabase::InsertReading(MYSQL* MySQLConRet, const char *tabel_name, cha
 		int ret = mysql_query(MySQLConRet, s);
 		
 		if (ret == 1) // Tabel do probably not excist.
-		{
+		{			
 			printf("%s : Creating column : %s\n", get_time(), tabel_name);
 			char s1[256] = "ALTER TABLE `KNet`.`Data` ADD COLUMN ";
 			strcat(s1, tabel_name);
